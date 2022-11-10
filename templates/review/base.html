@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Movie Reviews</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+  <body class="bg-white">
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container-fluid mx-5 px-2">
+
+     <a class="navbar-brand" href="{% url 'index' %}">Movie Review</a>
+
+     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="#">Login</a>
+            </li>
+
+          </ul>
+
+         <form class="d-flex pt-2" action="{% url 'index' %}" method="post"  role="search">
+                {% csrf_token %}
+                <input class="form-control  me-2" type="search" placeholder="Search movies" aria-label="Search your favorite movies" name="search">
+                <button class="btn btn-outline-success" type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search-heart" viewBox="0 0 16 16">
+                      <path d="M6.5 4.482c1.664-1.673 5.825 1.254 0 5.018-5.825-3.764-1.664-6.69 0-5.018Z"/>
+                      <path d="M13 6.5a6.471 6.471 0 0 1-1.258 3.844c.04.03.078.062.115.098l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1.007 1.007 0 0 1-.1-.115h.002A6.5 6.5 0 1 1 13 6.5ZM6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11Z"/>
+                    </svg>
+                </button>
+         </form>
+      </div>
+
+
+    </div>
+  </nav>
+
+    <div class="container container-margin" >
+        <div class="row align-items-center shadow-lg p-3 mb-3 bg-body rounded p-4">
+
+              <div class="col-lg-8">
+                <h1 class="fw-bold text-dark text-opacity-75">CCSU Computer Science Department</h1>
+                <p class="lead">
+                  We offer undergraduate and graduate programs to prepare highly qualified computing professionals to
+                  meet the growing demands of the industry. The Honors Bachelor of Science program in Computer Science
+                  is accredited by the Computing Accreditation Commission of ABET.
+                </p>
+              </div>
+
+              <div class="col-lg-4 text-center">
+                <img src="https://www.ccsu.edu/cs/images/ABET_CAC.png" class="img-fluid" alt="ABET">
+              </div>
+
+        </div>
+
+{% block body %}
+{% endblock %}
+
+
+    <div class="container-fluid footer text-white pb-5">
+
+           <div class="row">
+               <div class="col">
+                 <svg xmlns="http://www.w3.org/2000/svg" viewBox=" 0 0 1440 320">
+                <path fill="#fafafa" fill-opacity="1" d="M0,192L24,192C48,192,96,192,144,192C192,192,240,192,288,170.7C336,149,384,107,432,128C480,149,528,235,576,245.3C624,256,672,192,720,138.7C768,85,816,43,864,69.3C912,96,960,192,1008,197.3C1056,203,1104,117,1152,106.7C1200,96,1248,160,1296,192C1344,224,1392,224,1416,224L1440,224L1440,0L1416,0C1392,0,1344,0,1296,0C1248,0,1200,0,1152,0C1104,0,1056,0,1008,0C960,0,912,0,864,0C816,0,768,0,720,0C672,0,624,0,576,0C528,0,480,0,432,0C384,0,336,0,288,0C240,0,192,0,144,0C96,0,48,0,24,0L0,0Z"></path>
+                 </svg>
+               </div>
+           </div>
+
+            <div class="row ps-5">
+
+            <div class="col-md-8 col-6 ps-5">
+                <h1 class="display-4"><strong>Contact</strong></h1>
+            </div>
+
+            <div class="col-md-4 col-6">
+
+                <h3><a href="#">Chad Williams</a></h3>
+
+                    <small>Professor, Department Chair</small>
+
+                <p>
+                     <small>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
+                             <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
+                        </svg>
+                        (860) 832-2719
+                    </small>
+                </p>
+
+                <h3><a href="#">Bonnie Lachance</a></h3>
+
+
+                    <small>Secretary</small>
+
+
+                <p>
+                    <small>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
+                             <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
+                        </svg>
+                        (860) 832-2710
+                    </small>
+                </p>
+                 <h3>
+                     Location <svg xmlns="http://www.w3.org/2000/svg" width="25" fill="currentColor"  class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                                <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>
+                 </h3>
+
+                 <small>Maria Sanford, 303</small>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+  </body>
+</html>

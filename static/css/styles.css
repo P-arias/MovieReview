@@ -1,0 +1,14 @@
+.container-margin{
+    margin-top: 5em;
+}
+
+
+.footer{
+    background: rgb(112,71,252);
+    background: linear-gradient(234deg, rgba(112,71,252,1) 0%, rgba(0,255,229,1) 100%);
+    padding: 0 0 0 0;
+}
+ .footer a{
+
+     color: white;
+ }
