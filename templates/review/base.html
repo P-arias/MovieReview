@@ -51,16 +51,17 @@
         <div class="row align-items-center shadow-lg p-3 mb-3 bg-body rounded p-4">
 
               <div class="col-lg-8">
-                <h1 class="fw-bold text-dark text-opacity-75">CCSU Computer Science Department</h1>
+                <h1 class="fw-bold text-dark text-opacity-75">Movie Review</h1>
                 <p class="lead">
-                  We offer undergraduate and graduate programs to prepare highly qualified computing professionals to
-                  meet the growing demands of the industry. The Honors Bachelor of Science program in Computer Science
-                  is accredited by the Computing Accreditation Commission of ABET.
+                  Film criticism is the analysis and evaluation of films and the film medium. In general, film
+                    criticism can be divided into two categories: journalistic criticism that appears regularly in newspapers,
+                    magazines and other popular mass-media outlets; and academic criticism by film scholars who are informed by
+                    film theory and are published in academic journals.
                 </p>
               </div>
 
-              <div class="col-lg-4 text-center">
-                <img src="https://www.ccsu.edu/cs/images/ABET_CAC.png" class="img-fluid" alt="ABET">
+              <div class="col-lg-4 text-center" style="width: 18rem">
+                <img src="{% static 'images/cinema.png' %}" class="img-fluid" alt="guy watching movie on a couch">
               </div>
 
         </div>
@@ -87,39 +88,28 @@
 
             <div class="col-md-4 col-6">
 
-                <h3><a href="#">Chad Williams</a></h3>
-
-                    <small>Professor, Department Chair</small>
+                <h3><a href="#">Pedro Arias</a></h3>
 
                 <p>
                      <small>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25" fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
-                             <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
+                            <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
                         </svg>
-                        (860) 832-2719
+                        pedroa@my.ccsu.edu
                     </small>
                 </p>
 
-                <h3><a href="#">Bonnie Lachance</a></h3>
-
-
-                    <small>Secretary</small>
-
+                <h3><a href="#">Dejah Murray</a></h3>
 
                 <p>
                     <small>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25" fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
-                             <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
+                            <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
                         </svg>
-                        (860) 832-2710
+                        dejahmurray@my.ccsu.edu
                     </small>
                 </p>
-                 <h3>
-                     Location <svg xmlns="http://www.w3.org/2000/svg" width="25" fill="currentColor"  class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
-                                <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>
-                 </h3>
 
-                 <small>Maria Sanford, 303</small>
             </div>
         </div>
     </div>
