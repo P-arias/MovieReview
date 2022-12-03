@@ -14,7 +14,7 @@
                                           Year of release: {{ movie.Year }}
                                       </P>
 
-                                    <a href="#" class="btn btn-info">View Details &raquo;</a>
+                                    <a href="{% url 'posts' movie.imdbID %}" class="btn btn-info">View Details &raquo;</a>
                                   </div>
                            </div>
                 </div>

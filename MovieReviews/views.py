@@ -2,9 +2,12 @@ from django.shortcuts import render, redirect
 import json
 import requests
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegistrationForm
+from .forms import PostForm
+from .models import Post
 
 API_KEY = '444422-MovieRev-XMHI8X3L'
 def index(request):
@@ -90,3 +93,39 @@ def logout_view(request):
     logout(request)
     # redirect the user to index page after logout
     return redirect('index')
+
+def posts(request, movie_id):
+
+    posts_results = Post.objects.filter(movieId__icontains=movie_id)
+
+    url = "https://moviesdb5.p.rapidapi.com/om"
+
+    querystring = {"i": movie_id}
+
+    headers = {
+        "X-RapidAPI-Key": "f971ebd360mshca57000ed7260fbp131452jsn0c465236876d",
+        "X-RapidAPI-Host": "moviesdb5.p.rapidapi.com"
+    }
+
+    response = requests.request("GET", url, headers=headers, params=querystring)
+    movie = response.json()
+    context = {'movie': movie, 'posts': posts_results}
+    return render(request, 'review/posts.html', context)
+
+@login_required(login_url='login')
+def add(request, movie_id, user_name):
+    # Create a form instance and populate it with data from the request
+    form = PostForm(request.POST or None)
+    form.author = user_name
+    form.movieId = movie_id
+
+    # check whether it's valid:
+    if form.is_valid():
+        print('sucess')
+        # save the record into the db
+        form.save()
+        # after saving redirect to view_product page
+        return posts(request, movie_id)
+    print('fail')
+    # if the request does not have post data, a blank form will be rendered
+    return render(request, 'review/add.html', {'form': form, 'movie_id': movie_id})
