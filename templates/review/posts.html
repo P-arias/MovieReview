@@ -23,12 +23,16 @@
                                     <div class="col-md-8">
                                         <h2> {{ post.author }} </h2>
                                         <p>{{ post.details }}</p>
+                                        {% if user.username == post.author %}
+                                            <a href="{% url 'update' post.id user.username 'posts'%}" class="btn btn-warning"> Edit </a>
+                                            <a href="{% url 'delete' post.id user.username 'posts'%}" class="btn btn-danger"> Delete </a>
+                                        {% endif %}
                                     </div>
                                 </div>
                                 {% empty %}
                                     <h3>No items found with your search term, or there is no todo added yet.</h3>
                             {% endfor %}
-            <a href="{% url 'add' movie.imdbID 'plain' %}" class="btn btn-success"><i class="fas fa-plus"></i> Review this movie</a>
+            <a href="{% url 'add' movie.imdbID 'plain' movie.Title %}" class="btn btn-success"><i class="fas fa-plus"></i> Review this movie</a>
         </div>
 
     </div>

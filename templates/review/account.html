@@ -1,10 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "review/base.html" %}
 
-</body>
-</html>
+{% block body %}
+    <div class="row align-items-center shadow-lg  mb-3 bg-body rounded p-2">
+        <div class="row row-cols-1 row-cols-lg-4 g-2 p-4">
+
+            <h1>{{ user.username }}</h1>
+                            {% for post in posts %}
+                                <div class="row align-items-center shadow-lg bg-body rounded mb-3">
+                                    <div class="col-md-8">
+                                        <h2> {{ post.movieTitle }} </h2>
+                                        <p>{{ post.details }}</p>
+                                    </div>
+                                    <div class="col-md-4 text-sm-end text-start">
+                                                   <a href="{% url 'update' post.id user.username 'account'%}" class="btn btn-success"> Update </a>
+                                                  <a href="{% url 'delete' post.id user.username 'account'%}" class="btn btn-danger"> Delete </a>
+                                                  <a href="{% url 'posts' post.movieId %}" class="btn btn-info">Go back &raquo;</a>
+                                    </div>
+                                </div>
+                                {% empty %}
+                                    <h3>No items found with your search term, or there is no todo added yet.</h3>
+                            {% endfor %}
+
+        </div>
+
+    </div>
+
+
+
+
+{% endblock %}

@@ -38,7 +38,7 @@
                         <a class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" href="#"
                            role="button" aria-expanded="false">{{  user.username}}</a>
                         <ul class="dropdown-menu">
-                            <li> <a class="dropdown-item" href="{% url 'index' %}">Home</a></li>
+                            <li> <a class="dropdown-item" href="{% url 'account' user.username %}">Account</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li> <a class="dropdown-item" href="{% url 'logout' %}">Logout</a> </li>
                         </ul>
@@ -55,26 +55,6 @@
         </div>
     </nav>
 
-
-
-    <div class="container container-margin" >
-        <div class="row align-items-center shadow-lg p-3 mb-3 bg-body rounded p-4">
-
-              <div class="col-lg-8">
-                <h1 class="fw-bold text-dark text-opacity-75">Movie Review</h1>
-                <p class="lead">
-                  Film criticism is the analysis and evaluation of films and the film medium. In general, film
-                    criticism can be divided into two categories: journalistic criticism that appears regularly in newspapers,
-                    magazines and other popular mass-media outlets; and academic criticism by film scholars who are informed by
-                    film theory and are published in academic journals.
-                </p>
-              </div>
-
-              <div class="col-lg-4 text-center" style="width: 18rem">
-                <img src="{% static 'images/cinema.png' %}" class="img-fluid" alt="guy watching movie on a couch">
-              </div>
-
-        </div>
 
 {% block body %}
 {% endblock %}

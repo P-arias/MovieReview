@@ -9,8 +9,11 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
 
-    path('add/<str:movie_id>/<str:user_name>', views.add, name='add'),
+    path('add/<str:movie_id>/<str:user_name>/<str:movie_title>', views.add, name='add'),
+    path('update/<int:post_id>/<str:user_name>/<str:redirect>', views.update, name='update'),
+    path('delete/<int:post_id>/<str:user_name>/<str:redirect>', views.delete, name='delete'),
     path('posts/<str:movie_id>', views.posts, name='posts'),
+    path('account/<str:user_name>', views.account, name='account'),
 
 ]
 

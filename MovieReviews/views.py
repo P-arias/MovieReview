@@ -113,12 +113,12 @@ def posts(request, movie_id):
     return render(request, 'review/posts.html', context)
 
 @login_required(login_url='login')
-def add(request, movie_id, user_name):
+def add(request, movie_id, user_name, movie_title):
     # Create a form instance and populate it with data from the request
     form = PostForm(request.POST or None)
     form.author = user_name
     form.movieId = movie_id
-
+    form.movieTitle = movie_title
     # check whether it's valid:
     if form.is_valid():
         print('sucess')
@@ -128,4 +128,46 @@ def add(request, movie_id, user_name):
         return posts(request, movie_id)
     print('fail')
     # if the request does not have post data, a blank form will be rendered
-    return render(request, 'review/add.html', {'form': form, 'movie_id': movie_id})
+    return render(request, 'review/add.html', {'form': form, 'movie_id': movie_id, 'movie_title': movie_title})
+
+@login_required(login_url='login')
+def update(request, post_id, user_name, redirect):
+    # Get the product based on its id
+    post = Post.objects.get(id=post_id)
+    # populate a form instance with data from the data on the database
+    # instance=product allows to update the record rather than creating a new record when save method is called
+    form = PostForm(request.POST or None, instance=post)
+
+    # check whether it's valid:
+    if form.is_valid():
+        print('success 1')
+        # update the record in the db
+        form.save()
+        print('success 2')
+        # after updating redirect to view_product page
+        if(redirect == 'account'):
+            return account(request, user_name)
+        elif(redirect == 'posts'):
+            return posts(request, post.movieId)
+
+    # if the request does not have post data, render the page with the form containing the product's info
+    return render(request, 'review/update.html', {'form': form, 'post_id': post_id, 'post': post, 'redirect': redirect})
+
+@login_required(login_url='login')
+def delete(request, post_id, user_name, redirect):
+    # Get the product based on its id
+    post = Post.objects.get(id=post_id)
+    # if this is a POST request, we need to delete the form data
+    post.delete()
+    # after deleting redirect to view_product page
+    if (redirect == 'account'):
+        return account(request, user_name)
+    elif (redirect == 'posts'):
+        return posts(request, post.movieId)
+
+@login_required(login_url='login')
+def account(request, user_name):
+
+    posts_results = Post.objects.filter(author__icontains=user_name)
+    context = {'posts': posts_results}
+    return render(request, 'review/account.html', context)
