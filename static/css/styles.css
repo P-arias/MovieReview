@@ -12,3 +12,12 @@
 
      color: white;
  }
+
+ body {
+    background-color: #fefefe;
+    padding-top: 50px;
+}
+
+form > .alert > ul > li {
+    list-style: none;
+}
