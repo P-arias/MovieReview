@@ -13,7 +13,8 @@ urlpatterns = [
     path('update/<int:post_id>/<str:user_name>/<str:redirect>', views.update, name='update'),
     path('delete/<int:post_id>/<str:user_name>/<str:redirect>', views.delete, name='delete'),
     path('posts/<str:movie_id>', views.posts, name='posts'),
-    path('account/<str:user_name>', views.account, name='account'),
+    path('account', views.account, name='account'),
+    path('searchterm/ajax', views.searchTerms, name='search')
 
 ]
 

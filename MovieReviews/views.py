@@ -8,14 +8,26 @@ from django.contrib.auth.decorators import login_required
 from .forms import UserRegistrationForm
 from .forms import PostForm
 from .models import Post
+from .forms import SearchForm
+from .models import SearchTerms
+from django.http import JsonResponse
+from django.core import serializers
+from django.core.exceptions import ObjectDoesNotExist
 
 API_KEY = '444422-MovieRev-XMHI8X3L'
 def index(request):
 
         search = 'Marvel'
+
+        form = SearchForm(request.POST or None)
+        if form.is_valid():
+            form.save()
+
         if request.method == 'POST':
-            search = request.POST.get('search')
+            search = request.POST.get('term')
             search = search.strip()
+
+
 
         #response = requests.get('https://tastedive.com/api/similar?q=' + search + '&type=movies&info=1&limit=20&k=' + API_KEY)
         #data = response.json()
@@ -37,9 +49,18 @@ def index(request):
             "X-RapidAPI-Host": "moviesdb5.p.rapidapi.com"
         }
 
+        searchTerms = ['']
+        if request.user.is_authenticated:
+            try:
+                searchTerms = SearchTerms.objects.filter(userId_id=request.user.id)
+
+            except ObjectDoesNotExist:
+                searchTerms = ['']
+                pass
+
         response = requests.request("GET", url, headers=headers, params=querystring)
         movies = response.json()
-        context = {'movies': movies['Search']}
+        context = {'movies': movies['Search'], 'searchTerms': searchTerms, 'form': form}
         return render(request, 'review/index.html', context)
 
 def register_view(request):
@@ -116,10 +137,7 @@ def posts(request, movie_id):
 def add(request, movie_id, user_name, movie_title):
     # Create a form instance and populate it with data from the request
     form = PostForm(request.POST or None)
-    form.author = user_name
-    form.movieId = movie_id
-    form.movieTitle = movie_title
-    # check whether it's valid:
+
     if form.is_valid():
         print('sucess')
         # save the record into the db
@@ -133,12 +151,14 @@ def add(request, movie_id, user_name, movie_title):
 @login_required(login_url='login')
 def update(request, post_id, user_name, redirect):
     # Get the product based on its id
-    post = Post.objects.get(id=post_id)
+
+    post = Post.objects.get(id=post_id, authorId=request.user)
     # populate a form instance with data from the data on the database
     # instance=product allows to update the record rather than creating a new record when save method is called
     form = PostForm(request.POST or None, instance=post)
 
     # check whether it's valid:
+    #if post.authorId_id == request.user.id:
     if form.is_valid():
         print('success 1')
         # update the record in the db
@@ -146,9 +166,11 @@ def update(request, post_id, user_name, redirect):
         print('success 2')
         # after updating redirect to view_product page
         if(redirect == 'account'):
-            return account(request, user_name)
+            return account(request)
         elif(redirect == 'posts'):
             return posts(request, post.movieId)
+    #else:
+      #  return index(request)
 
     # if the request does not have post data, render the page with the form containing the product's info
     return render(request, 'review/update.html', {'form': form, 'post_id': post_id, 'post': post, 'redirect': redirect})
@@ -158,16 +180,29 @@ def delete(request, post_id, user_name, redirect):
     # Get the product based on its id
     post = Post.objects.get(id=post_id)
     # if this is a POST request, we need to delete the form data
-    post.delete()
-    # after deleting redirect to view_product page
-    if (redirect == 'account'):
-        return account(request, user_name)
-    elif (redirect == 'posts'):
-        return posts(request, post.movieId)
+    if post.authorId_id == request.user.id:
+        post.delete()
+        # after deleting redirect to view_product page
+        if (redirect == 'account'):
+            return account(request)
+        elif (redirect == 'posts'):
+            return posts(request, post.movieId)
+    else:
+        return index(request)
 
 @login_required(login_url='login')
-def account(request, user_name):
+def account(request):
 
-    posts_results = Post.objects.filter(author__icontains=user_name)
+    posts_results = Post.objects.filter(author__icontains=request.user.username)
     context = {'posts': posts_results}
     return render(request, 'review/account.html', context)
+
+
+def searchTerms(request):
+
+    if request.is_ajax and request.method == "POST":
+
+        search_results = SearchTerms.objects.filter(userId=request.POST.get('userId'))
+        ser_instance = serializers.serialize('json', [search_results, ])
+        # send to client side.
+        return JsonResponse({"instance": ser_instance}, status=200)

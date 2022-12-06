@@ -17,6 +17,10 @@
                             <h5 class="card-title">{{ post.movieTitle }}</h5>
                               {{ form.details.label }}
                               {{ form.details }}
+                              <select hidden name="authorId" required="" id="id_authorId">
+                                  <option value="" selected="">---------</option>
+                                  <option selected="selected" value="{{ user.id }}"></option>
+                              </select>
                               <input hidden value="{{ user.username }}" type="text" name="author" maxlength="200" required="" id="id_author">
                               <input hidden value="{{ post.movieId }}" type="text" name="movieId" maxlength="200" required="" id="id_movieId">
                               <input hidden value="{{ post.movieTitle }}" type="text" name="movieTitle" maxlength="200" required="" id="id_movieTitle">
