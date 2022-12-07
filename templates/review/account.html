@@ -12,8 +12,8 @@
                                         <p>{{ post.details }}</p>
                                     </div>
                                     <div class="col-md-4 text-sm-end text-start">
-                                                   <a href="{% url 'update' post.id user.username 'account'%}" class="btn btn-success"> Update </a>
-                                                  <a href="{% url 'delete' post.id user.username 'account'%}" class="btn btn-danger"> Delete </a>
+                                                   <a href="{% url 'update' post.id 'account'%}" class="btn btn-success"> Update </a>
+                                                  <a href="{% url 'delete' post.id 'account'%}" class="btn btn-danger"> Delete </a>
                                                   <a href="{% url 'posts' post.movieId %}" class="btn btn-info">Go back &raquo;</a>
                                     </div>
                                 </div>

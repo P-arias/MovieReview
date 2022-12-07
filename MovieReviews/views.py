@@ -8,39 +8,58 @@ from django.contrib.auth.decorators import login_required
 from .forms import UserRegistrationForm
 from .forms import PostForm
 from .models import Post
+from .forms import SearchForm
+from .models import SearchTerms
+from django.http import JsonResponse
+from django.core import serializers
+from django.core.exceptions import ObjectDoesNotExist
 
 API_KEY = '444422-MovieRev-XMHI8X3L'
 def index(request):
 
         search = 'Marvel'
+
+        #Avoid saving the same keyterm for the same user more than once
+        form = SearchForm(request.POST or None)
+        if form.is_valid():
+            duplicate = SearchTerms.objects.filter(userId_id=request.user.id, term__icontains=request.POST.get('term'))
+            if not duplicate:
+                form.save()
+
         if request.method == 'POST':
-            search = request.POST.get('search')
+            search = request.POST.get('term')
             search = search.strip()
-
-        #response = requests.get('https://tastedive.com/api/similar?q=' + search + '&type=movies&info=1&limit=20&k=' + API_KEY)
-        #data = response.json()
-        #movies = data['Similar']['Info']
-        #movies.extend(data['Similar']['Results'])
-
-       # for movie in movies:
-          #  responseImages = requests.get('https://serpapi.com/playground?q=titanicmovie&tbm=isch&ijn=0')
-          #  imageSearch = responseImages.json()
-           # movie['wUrl'] = imageSearch['images_results']['thumbnail']
-
-
-        url = "https://moviesdb5.p.rapidapi.com/om"
 
         querystring = {"s": search, "type": "movie", "r": "json"}
 
-        headers = {
-            "X-RapidAPI-Key": "f971ebd360mshca57000ed7260fbp131452jsn0c465236876d",
-            "X-RapidAPI-Host": "moviesdb5.p.rapidapi.com"
-        }
+        searchTerms = ['']
+        if request.user.is_authenticated:
+            try:
+                searchTerms = SearchTerms.objects.filter(userId_id=request.user.id)
 
-        response = requests.request("GET", url, headers=headers, params=querystring)
-        movies = response.json()
-        context = {'movies': movies['Search']}
-        return render(request, 'review/index.html', context)
+            except ObjectDoesNotExist:
+                searchTerms = ['']
+                pass
+
+            response = getDataFromAPI(querystring)
+            movies = response.json()
+            try:
+                context = {'movies': movies['Search'], 'searchTerms': searchTerms, 'form': form}
+            except KeyError:
+                movies = [{'Poster': '#', 'Title': 'Movie not found try again', 'Year': '', 'imdbID': 'tt4154664'}]
+                context = {'movies': movies, 'searchTerms': searchTerms, 'form': form}
+            return render(request, 'review/index.html', context)
+
+def getDataFromAPI(querystring):
+
+    url = "https://moviesdb5.p.rapidapi.com/om"
+
+    headers = {
+        "X-RapidAPI-Key": "f971ebd360mshca57000ed7260fbp131452jsn0c465236876d",
+        "X-RapidAPI-Host": "moviesdb5.p.rapidapi.com"
+    }
+
+    return requests.request("GET", url, headers=headers, params=querystring)
 
 def register_view(request):
     # This function renders the registration form page and create a new user based on the form data
@@ -98,76 +117,71 @@ def posts(request, movie_id):
 
     posts_results = Post.objects.filter(movieId__icontains=movie_id)
 
-    url = "https://moviesdb5.p.rapidapi.com/om"
-
     querystring = {"i": movie_id}
 
-    headers = {
-        "X-RapidAPI-Key": "f971ebd360mshca57000ed7260fbp131452jsn0c465236876d",
-        "X-RapidAPI-Host": "moviesdb5.p.rapidapi.com"
-    }
-
-    response = requests.request("GET", url, headers=headers, params=querystring)
+    response = getDataFromAPI(querystring)
     movie = response.json()
     context = {'movie': movie, 'posts': posts_results}
     return render(request, 'review/posts.html', context)
 
 @login_required(login_url='login')
-def add(request, movie_id, user_name, movie_title):
+def add(request, movie_id, movie_title):
     # Create a form instance and populate it with data from the request
     form = PostForm(request.POST or None)
-    form.author = user_name
-    form.movieId = movie_id
-    form.movieTitle = movie_title
-    # check whether it's valid:
+
     if form.is_valid():
-        print('sucess')
         # save the record into the db
         form.save()
         # after saving redirect to view_product page
         return posts(request, movie_id)
-    print('fail')
     # if the request does not have post data, a blank form will be rendered
     return render(request, 'review/add.html', {'form': form, 'movie_id': movie_id, 'movie_title': movie_title})
 
 @login_required(login_url='login')
-def update(request, post_id, user_name, redirect):
+def update(request, post_id, redirect):
     # Get the product based on its id
-    post = Post.objects.get(id=post_id)
+    try:
+        post = Post.objects.get(id=post_id, authorId=request.user)
+    except ObjectDoesNotExist:
+        return render(request, 'review/error.html')
     # populate a form instance with data from the data on the database
     # instance=product allows to update the record rather than creating a new record when save method is called
     form = PostForm(request.POST or None, instance=post)
 
     # check whether it's valid:
+    #if post.authorId_id == request.user.id:
     if form.is_valid():
-        print('success 1')
         # update the record in the db
         form.save()
-        print('success 2')
         # after updating redirect to view_product page
         if(redirect == 'account'):
-            return account(request, user_name)
+            return account(request)
         elif(redirect == 'posts'):
             return posts(request, post.movieId)
+    #else:
+      #  return index(request)
 
     # if the request does not have post data, render the page with the form containing the product's info
     return render(request, 'review/update.html', {'form': form, 'post_id': post_id, 'post': post, 'redirect': redirect})
 
 @login_required(login_url='login')
-def delete(request, post_id, user_name, redirect):
-    # Get the product based on its id
-    post = Post.objects.get(id=post_id)
-    # if this is a POST request, we need to delete the form data
+def delete(request, post_id, redirect):
+    # Get the post based on its id
+    try:
+        post = Post.objects.get(id=post_id, authorId=request.user)
+    except ObjectDoesNotExist:
+        return render(request, 'review/error.html')
     post.delete()
-    # after deleting redirect to view_product page
+    # after deleting redirect to the page from where the request came from
     if (redirect == 'account'):
-        return account(request, user_name)
+        return account(request)
     elif (redirect == 'posts'):
         return posts(request, post.movieId)
 
 @login_required(login_url='login')
-def account(request, user_name):
+def account(request):
 
-    posts_results = Post.objects.filter(author__icontains=user_name)
+    posts_results = Post.objects.filter(authorId=request.user)
     context = {'posts': posts_results}
     return render(request, 'review/account.html', context)
+
