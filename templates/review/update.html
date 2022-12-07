@@ -3,7 +3,7 @@
 
 {% block body %}
 
-    <form action="{% url 'update' post_id user.username redirect %}" method="post" role="update">
+    <form action="{% url 'update' post_id redirect %}" method="post" role="update">
         {% csrf_token %}
         <div class="row  mt-3  mx-5 px-5 align-items-center d-flex justify-content-center">
 
