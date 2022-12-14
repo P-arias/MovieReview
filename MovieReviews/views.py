@@ -57,7 +57,7 @@ def getDataFromAPI(querystring):
     url = "https://moviesdb5.p.rapidapi.com/om"
 
     headers = {
-        "X-RapidAPI-Key": "f971ebd360mshca57000ed7260fbp131452jsn0c465236876d",
+        "X-RapidAPI-Key": "#",
         "X-RapidAPI-Host": "moviesdb5.p.rapidapi.com"
     }
 
