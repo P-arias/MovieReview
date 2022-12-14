@@ -1,23 +1,42 @@
 .container-margin{
     margin-top: 5em;
+    margin-bottom: 5em;
 }
 
 
-.footer{
-    background: rgb(112,71,252);
-    background: linear-gradient(234deg, rgba(112,71,252,1) 0%, rgba(0,255,229,1) 100%);
-    padding: 0 0 0 0;
+ a{
+    text-decoration: none;
 }
- .footer a{
-
-     color: white;
- }
 
  body {
     background-color: #fefefe;
     padding-top: 50px;
+
+}
+body{
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+}
+
+
+
+
+footer{
+   background-color: #ddfcfc;
+background-image: linear-gradient(180deg, #ddfcfc 17%, #ffffff 93%);
+
+font-size: 0.8rem;
+
+}
+.wrapper{
+  flex:1;
+}
+ .scroll::-webkit-scrollbar {
+    display: none;
 }
 
 form > .alert > ul > li {
     list-style: none;
 }
+

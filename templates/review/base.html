@@ -9,12 +9,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
 
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
 </head>
-  <body class="bg-white">
+  <body class="bg-white scroll">
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="{% url 'index' %}">WatchBox</a>
+        <a class="navbar-brand" href="{% url 'index' %}"><i class="fa-solid fa-tv m-2"></i>WatchBox</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -50,63 +51,78 @@
               </ul>
 
                 {% else %}
-                    <a class="btn btn-light" href={% url 'login' %}>Login</a>
-                    <div class="m-2"></div>
-                    <a class="btn btn-light" href={% url 'register' %}>Register</a>
+                   <a class="btn btn-light btn-outline-primary m-2" href={% url 'login' %}><i class="fa-solid fa-arrow-right-to-bracket"></i> Login</a>
+                    <a class="btn btn-light btn-outline-primary m-2" href={% url 'register' %}><i class="fa-regular fa-circle-user"></i> Register</a>
                 {% endif %}
 
             </div>
         </div>
     </nav>
 
-
+<div class="wrapper">
 {% block body %}
 {% endblock %}
+</div>
 
 
-    <div class="container-fluid footer text-white pb-5">
 
-           <div class="row">
-               <div class="col">
-                 <svg xmlns="http://www.w3.org/2000/svg" viewBox=" 0 0 1440 320">
-                <path fill="#fafafa" fill-opacity="1" d="M0,192L24,192C48,192,96,192,144,192C192,192,240,192,288,170.7C336,149,384,107,432,128C480,149,528,235,576,245.3C624,256,672,192,720,138.7C768,85,816,43,864,69.3C912,96,960,192,1008,197.3C1056,203,1104,117,1152,106.7C1200,96,1248,160,1296,192C1344,224,1392,224,1416,224L1440,224L1440,0L1416,0C1392,0,1344,0,1296,0C1248,0,1200,0,1152,0C1104,0,1056,0,1008,0C960,0,912,0,864,0C816,0,768,0,720,0C672,0,624,0,576,0C528,0,480,0,432,0C384,0,336,0,288,0C240,0,192,0,144,0C96,0,48,0,24,0L0,0Z"></path>
-                 </svg>
-               </div>
-           </div>
+  <footer class="pt-4 my-md-5 pt-md-5 ">
+        <div class="row">
+          <div class="col ">
 
-            <div class="row ps-5">
+          </div>
+          <div class="col ">
+            <h5>Contact</h5>
+            <ul class="list-unstyled text-small">
+                <li>Pedro Arias</li>
+                <li>
+                    <a class="text-muted" href="mailto: pedroa@my.ccsu.edu">
+                      <small>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
+                                <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
+                            </svg>
+                            pedroa@my.ccsu.edu
+                        </small>
+                  </a>
+                </li>
+                <li>Dejah Murray</li>
+                <li>
+                    <a class="text-muted" href="mailto: dejahmurray@my.ccsu.edu">
+                      <small>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
+                                <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
+                            </svg>
+                            dejahmurray@my.ccsu.edu
+                        </small>
+                    </a>
+                </li>
+            </ul>
+          </div>
+          <div class="col  ">
+            <h5></h5>
+            <ul class="list-unstyled text-small">
+              <li><a class="text-muted" href="#"></a></li>
+              <li><a class="text-muted" href="#"></a></li>
+              <li><a class="text-muted" href="#"></a></li>
+              <li><a class="text-muted" href="#"></a></li>
+            </ul>
+          </div>
+          <div class="col  ">
+            <h5>&copy Copyright 2022</h5>
+            <ul class="list-unstyled text-small">
+              <li><a class="text-muted" href="#">All Rights Reserved.</a></li>
+              <li><a class="text-muted" href="#"></a></li>
+              <li><a class="text-muted" href="#"></a></li>
+              <li><a class="text-muted" href="#"></a></li>
+            </ul>
+          </div>
+          <div class="col ">
 
-            <div class="col-md-8 col-6 ps-5">
-                <h1 class="display-4"><strong>Contact</strong></h1>
-            </div>
-
-            <div class="col-md-4 col-6">
-
-                <h3><a href="#">Pedro Arias</a></h3>
-
-                <p>
-                     <small>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
-                            <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
-                        </svg>
-                        pedroa@my.ccsu.edu
-                    </small>
-                </p>
-
-                <h3><a href="#">Dejah Murray</a></h3>
-
-                <p>
-                    <small>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
-                            <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
-                        </svg>
-                        dejahmurray@my.ccsu.edu
-                    </small>
-                </p>
-
-            </div>
+          </div>
         </div>
-    </div>
+      </footer>
+
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js">
     </script>
@@ -118,7 +134,6 @@
     <script>
 
           $('#id_term').typeahead({
-            // Add your source data here, in this example we are using an array of strings
             source: ["",{% if searchTerms.0 != '' %}
                          {% for search in searchTerms %}
                         "{{search.term}}",
@@ -126,41 +141,6 @@
                    {% endif %}]
           });
     </script>
-    <script>
-       /*  $(function () {
-                var availableTags = [
-                    "",
-                    {% if searchTerms.0 != '' %}
-                         {% for search in searchTerms %}
-                        "{{search.term}}",
-                        {% endfor %}
-                   {% endif %}
-                ];
-                $("#id_term").autocomplete({
-                    source: availableTags
-                });
-          } );
-*/
 
-    </script>
-    <script>
-      // Get the modal and canvas elements
-      var modal = document.getElementById('lights-confetti-modal');
-      var canvas = document.getElementById('lights-confetti-canvas');
-
-      // Set the dimensions of the canvas
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-
-      // Add an event listener to the trigger button
-      document.getElementById('trigger-event').addEventListener('click', function() {
-        // Show the modal
-        modal.style.display = "block";
-
-        // Use the Canvas API to draw the lights and confetti on the canvas
-        var ctx = canvas.getContext('2d');
-        // Add code here to draw the lights and confetti using the Canvas API
-      });
-    </script>
   </body>
 </html>

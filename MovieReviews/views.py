@@ -14,41 +14,43 @@ from django.http import JsonResponse
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 
-API_KEY = '444422-MovieRev-XMHI8X3L'
+
 def index(request):
 
-        search = 'Marvel'
 
-        #Avoid saving the same keyterm for the same user more than once
-        form = SearchForm(request.POST or None)
-        if form.is_valid():
-            duplicate = SearchTerms.objects.filter(userId_id=request.user.id, term__icontains=request.POST.get('term'))
-            if not duplicate:
-                form.save()
+    search = 'Marvel'
 
-        if request.method == 'POST':
-            search = request.POST.get('term')
-            search = search.strip()
+    # Avoid saving the same keyterm for the same user more than once
+    form = SearchForm(request.POST or None)
+    if form.is_valid():
+        duplicate = SearchTerms.objects.filter(userId_id=request.user.id, term__icontains=request.POST.get('term'))
+        if not duplicate:
+            form.save()
 
-        querystring = {"s": search, "type": "movie", "r": "json"}
+    if request.method == 'POST':
+        search = request.POST.get('term')
+        search = search.strip()
 
-        searchTerms = ['']
-        if request.user.is_authenticated:
-            try:
-                searchTerms = SearchTerms.objects.filter(userId_id=request.user.id)
+    querystring = {"s": search, "type": "movie", "r": "json"}
 
-            except ObjectDoesNotExist:
-                searchTerms = ['']
-                pass
+    searchTerms = ['']
+    if request.user.is_authenticated:
+        try:
+            searchTerms = SearchTerms.objects.filter(userId_id=request.user.id)
 
-            response = getDataFromAPI(querystring)
-            movies = response.json()
-            try:
-                context = {'movies': movies['Search'], 'searchTerms': searchTerms, 'form': form}
-            except KeyError:
-                movies = [{'Poster': '#', 'Title': 'Movie not found try again', 'Year': '', 'imdbID': 'tt4154664'}]
-                context = {'movies': movies, 'searchTerms': searchTerms, 'form': form}
-            return render(request, 'review/index.html', context)
+        except ObjectDoesNotExist:
+            searchTerms = ['']
+            pass
+
+    response = getDataFromAPI(querystring)
+    movies = response.json()
+    try:
+        context = {'movies': movies['Search'], 'searchTerms': searchTerms, 'form': form}
+    except KeyError:
+        movies = [{'Poster': '#', 'Title': 'Movie not found try again', 'Year': '', 'imdbID': 'tt4154664'}]
+        context = {'movies': movies, 'searchTerms': searchTerms, 'form': form}
+    return render(request, 'review/index.html', context)
+
 
 def getDataFromAPI(querystring):
 
@@ -121,11 +123,21 @@ def posts(request, movie_id):
 
     response = getDataFromAPI(querystring)
     movie = response.json()
-    context = {'movie': movie, 'posts': posts_results}
+
+    searchTerms = ['']
+    if request.user.is_authenticated:
+        try:
+            searchTerms = SearchTerms.objects.filter(userId_id=request.user.id)
+
+        except ObjectDoesNotExist:
+            searchTerms = ['']
+            pass
+
+    context = {'movie': movie, 'posts': posts_results, 'searchTerms': searchTerms}
     return render(request, 'review/posts.html', context)
 
 @login_required(login_url='login')
-def add(request, movie_id, movie_title):
+def add(request, movie_id):
     # Create a form instance and populate it with data from the request
     form = PostForm(request.POST or None)
 
@@ -134,8 +146,8 @@ def add(request, movie_id, movie_title):
         form.save()
         # after saving redirect to view_product page
         return posts(request, movie_id)
-    # if the request does not have post data, a blank form will be rendered
-    return render(request, 'review/add.html', {'form': form, 'movie_id': movie_id, 'movie_title': movie_title})
+    # if the request does not have post data, error
+    return render(request, 'review/error.html')
 
 @login_required(login_url='login')
 def update(request, post_id, redirect):
@@ -162,7 +174,16 @@ def update(request, post_id, redirect):
       #  return index(request)
 
     # if the request does not have post data, render the page with the form containing the product's info
-    return render(request, 'review/update.html', {'form': form, 'post_id': post_id, 'post': post, 'redirect': redirect})
+    searchTerms = ['']
+    if request.user.is_authenticated:
+        try:
+            searchTerms = SearchTerms.objects.filter(userId_id=request.user.id)
+
+        except ObjectDoesNotExist:
+            searchTerms = ['']
+            pass
+        context = {'form': form, 'post_id': post_id, 'post': post, 'redirect': redirect, 'searchTerms': searchTerms}
+    return render(request, 'review/update.html', context)
 
 @login_required(login_url='login')
 def delete(request, post_id, redirect):
@@ -178,10 +199,23 @@ def delete(request, post_id, redirect):
     elif (redirect == 'posts'):
         return posts(request, post.movieId)
 
+    return render(request, 'review/error.html')
+
 @login_required(login_url='login')
 def account(request):
 
+    searchTerms = ['']
+    if request.user.is_authenticated:
+        try:
+            searchTerms = SearchTerms.objects.filter(userId_id=request.user.id)
+
+        except ObjectDoesNotExist:
+            searchTerms = ['']
+            pass
+
     posts_results = Post.objects.filter(authorId=request.user)
-    context = {'posts': posts_results}
+    context = {'posts': posts_results, 'searchTerms': searchTerms}
     return render(request, 'review/account.html', context)
 
+def error(request):
+    return  render(request, 'review/error.html')
